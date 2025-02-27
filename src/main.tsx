@@ -1,10 +1,9 @@
-import { Amplify } from "aws-amplify";
+
 import axios from 'axios';
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import outputs from "../amplify_outputs.json";
 import App from "./App.tsx";
 import Footer from "./Components/Footer.tsx";
 import Header from "./Components/Header.tsx";
@@ -18,10 +17,6 @@ import { store } from "./store/store.tsx";
 
 axios.defaults.baseURL = 'https://api.themoviedb.org/3/'
 axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN}`
-
-Amplify.configure(outputs);
-
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 
