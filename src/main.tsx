@@ -1,4 +1,3 @@
-import { Authenticator } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 import axios from 'axios';
 import React from "react";
@@ -27,32 +26,24 @@ Amplify.configure(outputs);
 ReactDOM.createRoot(document.getElementById("root")!).render(
 
   <React.StrictMode>
+    <Provider store={store} >
+      <div className=" pb-14 lg:pb-0">
+        <BrowserRouter>
 
-    <Authenticator>
-      {({ signOut }) => (
-        <Provider store={store} >
-          <div className=" pb-14 lg:pb-0">
-            <BrowserRouter>
+          <Header />
 
-              <Header />
+          <Routes>
 
-              <Routes>
-
-                <Route path="/" element={<App />}></Route>
-                <Route path="/list/:id" element={<List />}></Route>
-                <Route path=":detail" element={<Explore />}></Route>
-                <Route path=":detail/:id" element={<Detail />}></Route>
-                <Route path="/search" element={<SearchPage />}></Route>
-              </Routes>
-              <button onClick={signOut} className="bg-neutral-300 text-black font-bold flex rounded justify-items-end">Sign out</button>
-              <Footer />
-              <MobileNavigation />
-            </BrowserRouter>
-          </div>
-        </Provider>
-
-      )}
-    </Authenticator>
-
+            <Route path="/" element={<App />}></Route>
+            <Route path="/list/:id" element={<List />}></Route>
+            <Route path=":detail" element={<Explore />}></Route>
+            <Route path=":detail/:id" element={<Detail />}></Route>
+            <Route path="/search" element={<SearchPage />}></Route>
+          </Routes>
+          <Footer />
+          <MobileNavigation />
+        </BrowserRouter>
+      </div>
+    </Provider>
   </React.StrictMode>
 );
