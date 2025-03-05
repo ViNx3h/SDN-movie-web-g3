@@ -12,6 +12,7 @@ import "./index.css";
 import Detail from "./Pages/Detail.tsx";
 import Explore from "./Pages/Explore.tsx";
 import List from "./Pages/List.tsx";
+import Login from './Pages/Login.tsx';
 import SearchPage from "./Pages/SearchPage.tsx";
 import { store } from "./store/store.tsx";
 
@@ -24,16 +25,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store} >
       <div className=" pb-14 lg:pb-0">
         <BrowserRouter>
-
           <Header />
-
           <Routes>
-
             <Route path="/" element={<App />}></Route>
             <Route path="/list/:id" element={<List />}></Route>
             <Route path=":detail" element={<Explore />}></Route>
             <Route path=":detail/:id" element={<Detail />}></Route>
             <Route path="/search" element={<SearchPage />}></Route>
+            <Route path='/Login' element={<Login />}></Route>
           </Routes>
           <Footer />
           <MobileNavigation />

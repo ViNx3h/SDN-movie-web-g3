@@ -26,6 +26,7 @@ function App() {
       setTopRated(response.data.results)
       // console.log(response.data.results)
     } catch (error) {
+      console.log("error", error);
 
     }
   }
@@ -33,7 +34,6 @@ function App() {
   const fetchTrendingData = async () => {
     try {
       const response = await axios.get('/trending/all/day');
-
       dispatch(setBannerData(response.data.results))
 
       // console.log("response", response.data.results)
