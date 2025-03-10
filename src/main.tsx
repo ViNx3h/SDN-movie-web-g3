@@ -1,5 +1,4 @@
-
-import axios from 'axios';
+import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -12,17 +11,25 @@ import "./index.css";
 import Detail from "./Pages/Detail.tsx";
 import Explore from "./Pages/Explore.tsx";
 import List from "./Pages/List.tsx";
-import Login from './Pages/Login.tsx';
+import SignUp from "./Pages/SignUp.tsx";
+// import SearchPage from "./Pages/SearchPage.tsx";
+
+import Booking from "./Pages/Booking.tsx";
 import SearchPage from "./Pages/SearchPage.tsx";
+import SignIn from './Pages/SignIn.jsx';
 import { store } from "./store/store.tsx";
+
+axios.defaults.baseURL = "https://api.themoviedb.org/3/";
+axios.defaults.headers.common["Authorization"] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN
+  }`;
+
 
 axios.defaults.baseURL = 'https://api.themoviedb.org/3/'
 axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN}`
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-
   <React.StrictMode>
-    <Provider store={store} >
+    <Provider store={store}>
       <div className=" pb-14 lg:pb-0">
         <BrowserRouter>
           <Header />
@@ -32,7 +39,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path=":detail" element={<Explore />}></Route>
             <Route path=":detail/:id" element={<Detail />}></Route>
             <Route path="/search" element={<SearchPage />}></Route>
-            <Route path='/Login' element={<Login />}></Route>
+            <Route
+              path="/booking/:detail/:id"
+              element={<Booking />}
+            ></Route>{" "}
+            {/* Thêm tuyến đường Booking */}
+            {/* <Route path="/search" element={<SearchPage />}></Route> */}
+
+            <Route path="/signin" element={<SignIn />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
+
           </Routes>
           <Footer />
           <MobileNavigation />
