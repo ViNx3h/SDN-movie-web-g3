@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Divider, Form, Input, message } from 'antd';
 import axios from 'axios';
-import { LockOutlined, UserOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Divider, message } from 'antd';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -14,7 +14,6 @@ function SignIn() {
 
   useEffect(() => {
     const handleGoogleAuth = () => {
-
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
 
@@ -24,17 +23,15 @@ function SignIn() {
 
           localStorage.setItem('token', token);
           localStorage.setItem('email', decodedToken.email);
-          //  localStorage.setItem('name', decodedToken.name);
-
           localStorage.setItem('role', decodedToken.role);
           localStorage.setItem('isLoggedIn', 'true');
-
 
           message.success('Đăng nhập Google thành công!');
           navigate('/');
 
-          // Xóa token khỏi URL
-          window.history.replaceState({}, document.title, '/');
+          // Clear token from URL after successful login
+          const cleanURL = window.location.origin + window.location.pathname;
+          window.history.replaceState({}, document.title, cleanURL);
 
           window.dispatchEvent(new Event('storage'));
         } catch (error) {
@@ -49,9 +46,11 @@ function SignIn() {
   }, [navigate]);
 
 
+
   const handleGoogleSignIn = () => {
     window.location.href = 'http://localhost:5000/api/auth/google';
   };
+
 
   const onFinish = async (values: { email: string; password: string }) => {
     try {
@@ -72,11 +71,12 @@ function SignIn() {
 
         window.dispatchEvent(new Event('storage'));
         message.success('Login successful!!');
+
         navigate('/');
       }
     } catch (error: any) {
       console.error('Login error:', error);
-      message.error(error.response?.data?.message || 'Login Faild.');
+      message.error(error.response?.data?.message || 'Login Failed.');
     }
   };
 
@@ -92,7 +92,7 @@ function SignIn() {
           </p>
         </div>
         <div className="relative overflow-hidden rounded-xl">
-          
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         </div>
       </div>

@@ -1,12 +1,14 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input } from 'antd';
 import axios from 'axios';
-import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Form, Input, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
+
+  console.log("nav", navigate);
+
 
   const onFinish = async (values: { username: string; email: string; password: string }) => {
     try {
@@ -59,12 +61,12 @@ function SignUp() {
             name="register"
             onFinish={onFinish}
             className="space-y-6"
-            autoComplete="off" 
+            autoComplete="off"
           >
             <Form.Item
               name="Username"
               rules={[{ required: true, message: 'Enter your name!' }]}
-              
+
             >
 
               <Input
