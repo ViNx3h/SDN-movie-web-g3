@@ -137,7 +137,9 @@ const Header = () => {
                         <label htmlFor="Movies" className='hover:text-neutral-100'>Movies</label>
                     </a>
                     <Link to={`/list/${data}`} className='hover:text-neutral-100 '> List</Link>
-
+                    <a href='/theaters'>
+                        <label htmlFor="Movies" className='hover:text-neutral-100'>Theaters</label>
+                    </a>
 
                 </div>
                 <div className='hidden: lg:flex items-center ml-auto '>
