@@ -18,14 +18,18 @@ import Booking from "./Pages/Booking.tsx";
 import SearchPage from "./Pages/SearchPage.tsx";
 import SignIn from './Pages/SignIn.jsx';
 import { store } from "./store/store.tsx";
-
-axios.defaults.baseURL = "https://api.themoviedb.org/3/";
-axios.defaults.headers.common["Authorization"] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN
-  }`;
+import Theaters from "./Pages/Theaters.tsx";
+import GetAllMovie from "./Pages/Movies/getAllMovie.tsx";
 
 
-axios.defaults.baseURL = 'https://api.themoviedb.org/3/'
-axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN}`
+
+// axios.defaults.baseURL = "https://api.themoviedb.org/3/";
+// axios.defaults.headers.common["Authorization"] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN
+//   }`;
+
+
+// axios.defaults.baseURL = 'https://api.themoviedb.org/3/'
+// axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN}`
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -37,7 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<App />}></Route>
             <Route path="/list/:id" element={<List />}></Route>
             <Route path=":detail" element={<Explore />}></Route>
-            <Route path=":detail/:id" element={<Detail />}></Route>
+            <Route path=":movie/:id" element={<Detail />}></Route>
             <Route path="/search" element={<SearchPage />}></Route>
             <Route
               path="/booking/:detail/:id"
@@ -45,10 +49,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             ></Route>{" "}
             {/* Thêm tuyến đường Booking */}
             {/* <Route path="/search" element={<SearchPage />}></Route> */}
+            <Route path="/theaters" element={<Theaters />}></Route>
 
             <Route path="/signin" element={<SignIn />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
-
+            <Route path="/movies" element={<GetAllMovie />} />
           </Routes>
           <Footer />
           <MobileNavigation />

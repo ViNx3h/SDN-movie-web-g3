@@ -110,7 +110,7 @@ const Header = () => {
         setShowDropdown(false);
 
         window.dispatchEvent(new Event('storage'));
-        message.success('Đăng xuất thành công!');
+        message.success('Logout successful!!');
         nav('/');
     };
 
@@ -126,16 +126,24 @@ const Header = () => {
                         <h2>Movie</h2>
                     </Link>
                 </div>
-                <div className=' lg:flex items-center gap-3 ml-5'>
+                <div className=' lg:flex items-center d-flex gap-5 ml-5'>
 
 
-                    <a href='/tv' >
-                        <label htmlFor="TV Shows" className='hover:text-neutral-100'>TV Shows</label>
-                    </a>
-                    <a href='/movie'>
-                        <label htmlFor="Movies" className='hover:text-neutral-100'>Movies</label>
-                    </a>
-                    <Link to={`/list/${data}`} className='hover:text-neutral-100 '> List</Link>
+
+                    <div>
+                        <Link to="/movies" className='hover:text-neutral-100'>
+                            Movies
+                        </Link>
+                    </div>
+
+                    <div>
+                        <Link to={`/list/${data}`} className='hover:text-neutral-100 '> List</Link>
+                    </div>
+                    <div>
+                        <a href='/theaters'>
+                            <label htmlFor="Movies" className='hover:text-neutral-100'>Theaters</label>
+                        </a>
+                    </div>
 
 
                 </div>
