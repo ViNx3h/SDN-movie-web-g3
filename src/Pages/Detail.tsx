@@ -33,7 +33,10 @@ const Detail = () => {
   const [data, setData] = useState<any>({});
   const params = useParams<any>();
   const navigate = useNavigate();
-
+  const username = localStorage.getItem("email");
+  console.log("user", username);
+  
+  const movie_id= params.id
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/auth/get_movie_by_id/${params.id}`);
@@ -43,6 +46,18 @@ const Detail = () => {
       console.log("error", error);
     }
   };
+
+  const handleAddFavList = async (username : any, movie_id : any) => {
+      try {
+        const response = await axios.post(`http://localhost:5000/api/auth/${username}/add_fav_movies/${movie_id}`)
+        console.log("response", response);
+        
+      } catch (error) {
+        console.log("error", error);
+        
+      }
+      
+  }
 
   useEffect(() => {
     fetchData();
@@ -99,6 +114,9 @@ const Detail = () => {
                   Xem trailer
                 </button>
               )}
+              <button onClick={() => handleAddFavList(username, movie_id)}>
+                FavList
+              </button>
             </div>
 
 

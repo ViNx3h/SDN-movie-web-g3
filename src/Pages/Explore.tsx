@@ -8,7 +8,7 @@ import '../index.css';
 const Explore = () => {
     const [data, setData] = useState<any[]>([]);
     const [totalPageNo, setTotalPageNo] = useState(0);
-    const params = useParams();
+    const params = useParams(); 
     // const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -23,6 +23,8 @@ const Explore = () => {
                     page: pageNo
                 }
             });
+            console.log("respose", response.data);
+            
             setData(response.data.results);
             setTotalPageNo(response.data.total_pages);
         } catch (error) {
