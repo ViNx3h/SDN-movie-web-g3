@@ -1,20 +1,19 @@
 import '@aws-amplify/ui-react/styles.css';
+import { message } from 'antd';
 import { fetchAuthSession } from 'aws-amplify/auth';
-import { useEffect, useState, useRef } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
 import { CgProfile } from "react-icons/cg";
+import { FaSearch } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../App.css';
-import axios from 'axios';
-import { Button, Dropdown, Menu, message } from 'antd';
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 
 const Header = () => {
     const location = useLocation();
-    const removeSpace = location?.search?.slice(3).split("%20").join(" ")
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get('q') || '';
+    const [searchInput, setSearchInput] = useState(searchQuery);
     const [data, setData] = useState<string | undefined>();
     const [isSearching, setIsSearching] = useState(false);
-    const [searchInput, setSearchInput] = useState(removeSpace);
     const nav = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,7 +37,7 @@ const Header = () => {
         if (searchInput && isSearching) {
             nav(`/search?q=${searchInput}`);
         }
-    }, [searchInput, isSearching, nav]);
+    }, [searchInput, isSearching, nav, location]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -111,7 +110,7 @@ const Header = () => {
         setShowDropdown(false);
 
         window.dispatchEvent(new Event('storage'));
-        message.success('Đăng xuất thành công!');
+        message.success('Logout successful!!');
         nav('/');
     };
 
@@ -127,19 +126,25 @@ const Header = () => {
                         <h2>Movie</h2>
                     </Link>
                 </div>
-                <div className=' lg:flex items-center gap-3 ml-5'>
+                <div className=' lg:flex items-center d-flex gap-5 ml-5'>
 
 
-                    <a href='/tv' >
-                        <label htmlFor="TV Shows" className='hover:text-neutral-100'>TV Shows</label>
-                    </a>
-                    <a href='/movie'>
-                        <label htmlFor="Movies" className='hover:text-neutral-100'>Movies</label>
-                    </a>
-                    <Link to={`/list/${data}`} className='hover:text-neutral-100 '> List</Link>
-                    <a href='/theaters'>
-                        <label htmlFor="Movies" className='hover:text-neutral-100'>Theaters</label>
-                    </a>
+
+                    <div>
+                        <Link to="/movies" className='hover:text-neutral-100'>
+                            Movies
+                        </Link>
+                    </div>
+
+                    <div>
+                        <Link to={`/list/${data}`} className='hover:text-neutral-100 '> List</Link>
+                    </div>
+                    <div>
+                        <a href='/theaters'>
+                            <label htmlFor="Movies" className='hover:text-neutral-100'>Theaters</label>
+                        </a>
+                    </div>
+
 
                 </div>
                 <div className='hidden: lg:flex items-center ml-auto '>
