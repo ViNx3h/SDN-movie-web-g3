@@ -2,18 +2,17 @@ import { GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Divider, Form, Input, message } from 'antd';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-
+import { getIdUser } from '../service/apiSignIn'
 function SignIn() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const handleGoogleAuth = () => {
+    const handleGoogleAuth = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
 
@@ -25,7 +24,7 @@ function SignIn() {
           localStorage.setItem('email', decodedToken.email);
           localStorage.setItem('role', decodedToken.role);
           localStorage.setItem('isLoggedIn', 'true');
-
+          await fetchUserId(token);
           message.success('Đăng nhập Google thành công!');
           navigate('/');
 
@@ -44,7 +43,15 @@ function SignIn() {
 
     handleGoogleAuth();
   }, [navigate]);
-
+  // Hàm fetchUserId để lấy ID người dùng
+  const fetchUserId = async (token: string) => {
+    try {
+      const data = await getIdUser(token);
+      localStorage.setItem('userId', data.userId);
+    } catch (error) {
+      console.error("Failed to get user ID", error);
+    }
+  };
 
 
   const handleGoogleSignIn = () => {
@@ -68,15 +75,15 @@ function SignIn() {
           localStorage.setItem('role', 'user');
         }
         localStorage.setItem('isLoggedIn', 'true');
-
+        await fetchUserId(response.data.token);
         window.dispatchEvent(new Event('storage'));
         message.success('Login successful!!');
 
         navigate('/');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Login error:', error);
-      message.error(error.response?.data?.message || 'Login Failed.');
+      message.error('Login Failed.');
     }
   };
 
@@ -84,12 +91,12 @@ function SignIn() {
     <div className="min-h-screen flex items-center justify-around bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className='hidden md:block bg-black/30 p-8 rounded-xl backdrop-blur-sm w-1/3 shadow-2xl border border-gray-800'>
         <div className='text-center mb-8'>
-          <p className='text-gray-300 text-lg'>
+          <h1 className='text-gray-300 text-lg'>
             The Ultimate Cinema Experience – Welcome to{' '}
-            <h1 className='text-4xl font-bold text-red-500 mb-4 font-sans'>
+            <p className='text-4xl font-bold text-red-500 mb-4 font-sans'>
               CineBooking
-            </h1>
-          </p>
+            </p>
+          </h1>
         </div>
         <div className="relative overflow-hidden rounded-xl">
 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -19,7 +18,7 @@ import SearchPage from "./Pages/SearchPage.tsx";
 import SignIn from './Pages/SignIn.jsx';
 import { store } from "./store/store.tsx";
 import Theaters from "./Pages/Theaters.tsx";
-import GetAllMovie from "./Pages/Movies/getAllMovie.tsx";
+import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
 
 
 
