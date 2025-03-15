@@ -19,6 +19,7 @@ import SignIn from './Pages/SignIn.jsx';
 import { store } from "./store/store.tsx";
 import Theaters from "./Pages/Theaters.tsx";
 import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
+import TheaterDetail from "./Pages/TheaterDetail.tsx";
 
 
 
@@ -49,6 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             {/* Thêm tuyến đường Booking */}
             {/* <Route path="/search" element={<SearchPage />}></Route> */}
             <Route path="/theaters" element={<Theaters />}></Route>
+            <Route path="/theater/:id" element={<TheaterDetail />}></Route>
 
             <Route path="/signin" element={<SignIn />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
