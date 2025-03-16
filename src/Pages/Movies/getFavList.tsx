@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface Movie {
     _id: string;
@@ -31,7 +31,10 @@ const GetFavList = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const params = useParams<any>();
     const id = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+    const movie_id= params.id
     const fetchMovies = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -60,6 +63,23 @@ const GetFavList = () => {
     useEffect(() => {
         fetchMovies();
     }, []);
+
+    const handleRemoveFavList = async  (movie_id: string ) => {
+        try {
+          const response = await axios.post(`http://localhost:5000/api/auth/${id}/remove_fav_movie/${movie_id}`,
+            {},{
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+            fetchMovies();
+          
+        } catch (error) {
+          console.log("error", error);
+          
+        }
+        
+    }
 
     return (
         <div className="min-h-screen bg-gray-900 p-8">
@@ -136,7 +156,12 @@ const GetFavList = () => {
                                             >
                                                 Đặt vé
                                             </button>
+                                            
                                         )}
+                                     <button onClick={() => handleRemoveFavList(movie._id)}
+                className="bg-red-500 text-white font-bold py-2 px-6 rounded hover:bg-red-700 transition duration-300">
+                Xóa Yêu Thích
+              </button>
                                     </div>
                                 </div>
                             </div>
