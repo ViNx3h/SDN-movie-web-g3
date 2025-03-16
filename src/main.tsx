@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -10,7 +10,7 @@ import MobileNavigation from "./Components/MobileNavigation.tsx";
 import "./index.css";
 import Detail from "./Pages/Detail.tsx";
 import Explore from "./Pages/Explore.tsx";
-import List from "./Pages/List.tsx";
+import List from "./Pages/FavoriteList.tsx";
 import SignUp from "./Pages/SignUp.tsx";
 // import SearchPage from "./Pages/SearchPage.tsx";
 
@@ -21,15 +21,6 @@ import { store } from "./store/store.tsx";
 import Theaters from "./Pages/Theaters.tsx";
 import GetAllMovie from "./Pages/Movies/getAllMovie.tsx";
 
-
-
-// axios.defaults.baseURL = "https://api.themoviedb.org/3/";
-// axios.defaults.headers.common["Authorization"] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN
-//   }`;
-
-
-// axios.defaults.baseURL = 'https://api.themoviedb.org/3/'
-// axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN}`
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
