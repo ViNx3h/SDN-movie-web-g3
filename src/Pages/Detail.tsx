@@ -34,9 +34,12 @@ const Detail = () => {
   const params = useParams<any>();
   const navigate = useNavigate();
   const username = localStorage.getItem("email");
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  const movie_id= params.id
+
   console.log("user", username);
   
-  const movie_id= params.id
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/auth/get_movie_by_id/${params.id}`);
@@ -47,9 +50,14 @@ const Detail = () => {
     }
   };
 
-  const handleAddFavList = async (username : any, movie_id : any) => {
+  const handleAddFavList = async  () => {
       try {
-        const response = await axios.post(`http://localhost:5000/api/auth/${username}/add_fav_movies/${movie_id}`)
+        const response = await axios.post(`http://localhost:5000/api/auth/${userId}/add_fav_movies/${movie_id}`,
+          {},{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
         console.log("response", response);
         
       } catch (error) {
@@ -114,8 +122,9 @@ const Detail = () => {
                   Xem trailer
                 </button>
               )}
-              <button onClick={() => handleAddFavList(username, movie_id)}>
-                FavList
+              <button onClick={() => handleAddFavList()}
+                className="bg-red-500 text-white font-bold py-2 px-6 rounded hover:bg-red-700 transition duration-300">
+                Yêu Thích
               </button>
             </div>
 
