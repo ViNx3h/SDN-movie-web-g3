@@ -19,7 +19,7 @@ import SearchPage from "./Pages/SearchPage.tsx";
 import SignIn from './Pages/SignIn.jsx';
 import { store } from "./store/store.tsx";
 import Theaters from "./Pages/Theaters.tsx";
-import GetAllMovie from "./Pages/Movies/getAllMovie.tsx";
+import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
 
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
