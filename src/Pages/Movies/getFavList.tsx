@@ -27,28 +27,31 @@ interface Movie {
     }>;
 }
 
-const GetAllMovie = () => {
+const GetFavList = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const username = localStorage.getItem("email");
+    const id = localStorage.getItem("userId");
     const fetchMovies = async () => {
         const token = localStorage.getItem('token');
+        if (!token) {
+            message.error('You need to sign in to view movie list');
+            navigate('/signin'); // Chuyển hướng đến trang đăng nhập
+            return;
+        }
         setLoading(true);
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/auth/user/get_fav_movies/${username}`,
+                `http://localhost:5000/api/auth/user/get_fav_movies/${id}`,
                {
                    headers: {
                        'Authorization': `Bearer ${token}`
-                   }
+                   }    
                }
             );
-            console.log('Response data:', response.data);
             setMovies(response.data.data);
         } catch (error) {
             console.error('Error fetching movies:', error);
-            message.error('Không thể tải danh sách phim');
         } finally {
             setLoading(false);
         }
@@ -147,4 +150,4 @@ const GetAllMovie = () => {
     );
 };
 
-export default GetAllMovie;
+export default GetFavList;
