@@ -1,6 +1,5 @@
 import '@aws-amplify/ui-react/styles.css';
 import { message } from 'antd';
-import { fetchAuthSession } from 'aws-amplify/auth';
 import { useEffect, useRef, useState } from 'react';
 import { CgProfile } from "react-icons/cg";
 import { FaSearch } from 'react-icons/fa';
@@ -24,13 +23,13 @@ const Header = () => {
 
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const handleGetToken = async () => {
-        const session = await fetchAuthSession();
-        const username = session.tokens?.accessToken.payload.username;
+    const handleGetId = async () => {
+        const username = localStorage.getItem("email");
+        console.log("user", username);
+        
         if (typeof username === 'string') {
             setData(username); // Only set data if it's a valid string
         }
-        console.log("access token", session.tokens?.accessToken.payload.username)
 
     }
     useEffect(() => {
@@ -47,7 +46,7 @@ const Header = () => {
     };
 
     useEffect(() => {
-        handleGetToken();
+        handleGetId();
     }, [])
 
     // Thêm useEffect để kiểm tra trạng thái đăng nhập

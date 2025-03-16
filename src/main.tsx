@@ -1,3 +1,4 @@
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -21,15 +22,6 @@ import Theaters from "./Pages/Theaters.tsx";
 import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
 import TheaterDetail from "./Pages/TheaterDetail.tsx";
 
-
-
-// axios.defaults.baseURL = "https://api.themoviedb.org/3/";
-// axios.defaults.headers.common["Authorization"] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN
-//   }`;
-
-
-// axios.defaults.baseURL = 'https://api.themoviedb.org/3/'
-// axios.defaults.headers.common['Authorization'] = `Bearer ${import.meta.env.VITE_APP_ACCESS_TOKEN}`
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
