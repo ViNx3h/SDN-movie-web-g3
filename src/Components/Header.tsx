@@ -122,7 +122,7 @@ const Header = () => {
             <div className='container mx-auto px-1 flex text-red-500 h-full items-center'>
                 <div className='text-lg font-bold'>
                     <Link to='/'>
-                        <h2>Movie</h2>
+                        <h2>Home</h2>
                     </Link>
                 </div>
                 <div className=' lg:flex items-center d-flex gap-5 ml-5'>
@@ -136,7 +136,7 @@ const Header = () => {
                     </div>
 
                     <div>
-                        <Link to={`/list/${data}`} className='hover:text-neutral-100 '> List</Link>
+                        <Link to={`/list/fav_list`} className='hover:text-neutral-100 '> Favourite List</Link>
                     </div>
                     <div>
                         <a href='/theaters'>

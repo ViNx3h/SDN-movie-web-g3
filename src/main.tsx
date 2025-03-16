@@ -10,7 +10,7 @@ import MobileNavigation from "./Components/MobileNavigation.tsx";
 import "./index.css";
 import Detail from "./Pages/Detail.tsx";
 import Explore from "./Pages/Explore.tsx";
-import List from "./Pages/List.tsx";
+import GetFavList from "./Pages/Movies/getFavList.tsx";
 import SignUp from "./Pages/SignUp.tsx";
 // import SearchPage from "./Pages/SearchPage.tsx";
 
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Header />
           <Routes>
             <Route path="/" element={<App />}></Route>
-            <Route path="/list/:id" element={<List />}></Route>
+            <Route path="/list/fav_list" element={<GetFavList />}></Route>
             <Route path=":detail" element={<Explore />}></Route>
             <Route path=":movie/:id" element={<Detail />}></Route>
             <Route path="/search" element={<SearchPage />}></Route>
