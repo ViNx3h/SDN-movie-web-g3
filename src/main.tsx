@@ -1,3 +1,5 @@
+import axios from "axios";
+
 
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -16,6 +18,19 @@ import SignUp from "./Pages/SignUp.tsx";
 
 import Booking from "./Pages/Booking.tsx";
 import SearchPage from "./Pages/SearchPage.tsx";
+import SignIn from "./Pages/SignIn.jsx";
+import { store } from "./store/store.tsx";
+
+axios.defaults.baseURL = "https://api.themoviedb.org/3/";
+axios.defaults.headers.common["Authorization"] = `Bearer ${
+  import.meta.env.VITE_APP_ACCESS_TOKEN
+}`;
+
+axios.defaults.baseURL = "https://api.themoviedb.org/3/";
+axios.defaults.headers.common["Authorization"] = `Bearer ${
+  import.meta.env.VITE_APP_ACCESS_TOKEN
+}`;
+
 import SignIn from './Pages/SignIn.jsx';
 import { store } from "./store/store.tsx";
 import Theaters from "./Pages/Theaters.tsx";
@@ -33,6 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<App />}></Route>
             <Route path="/list/fav_list" element={<GetFavList />}></Route>
             <Route path=":detail" element={<Explore />}></Route>
+            <Route path=":detail/:id" element={<Detail />}></Route>
             <Route path=":movie/:id" element={<Detail />}></Route>
             <Route path="/search" element={<SearchPage />}></Route>
             <Route
@@ -41,6 +57,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             ></Route>{" "}
             {/* Thêm tuyến đường Booking */}
             {/* <Route path="/search" element={<SearchPage />}></Route> */}
+            <Route path="/signin" element={<SignIn />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/theaters" element={<Theaters />}></Route>
             <Route path="/theater/:id" element={<TheaterDetail />}></Route>
 
