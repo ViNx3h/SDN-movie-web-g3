@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -31,12 +30,9 @@ axios.defaults.headers.common["Authorization"] = `Bearer ${
   import.meta.env.VITE_APP_ACCESS_TOKEN
 }`;
 
-import SignIn from './Pages/SignIn.jsx';
-import { store } from "./store/store.tsx";
 import Theaters from "./Pages/Theaters.tsx";
 import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
 import TheaterDetail from "./Pages/TheaterDetail.tsx";
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -61,7 +57,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/theaters" element={<Theaters />}></Route>
             <Route path="/theater/:id" element={<TheaterDetail />}></Route>
-
             <Route path="/signin" element={<SignIn />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/movies" element={<GetAllMovie />} />
