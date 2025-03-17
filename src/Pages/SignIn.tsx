@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Divider, Form, Input, message } from 'antd';
 import axios from 'axios';
-import { LockOutlined, UserOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Divider, message } from 'antd';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-
+import { getIdUser } from '../service/apiSignIn'
 function SignIn() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const handleGoogleAuth = () => {
-
+    const handleGoogleAuth = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
 
@@ -24,17 +22,15 @@ function SignIn() {
 
           localStorage.setItem('token', token);
           localStorage.setItem('email', decodedToken.email);
-          //  localStorage.setItem('name', decodedToken.name);
-
           localStorage.setItem('role', decodedToken.role);
           localStorage.setItem('isLoggedIn', 'true');
-
-
+          await fetchUserId(token);
           message.success('Đăng nhập Google thành công!');
           navigate('/');
 
-          // Xóa token khỏi URL
-          window.history.replaceState({}, document.title, '/');
+          // Clear token from URL after successful login
+          const cleanURL = window.location.origin + window.location.pathname;
+          window.history.replaceState({}, document.title, cleanURL);
 
           window.dispatchEvent(new Event('storage'));
         } catch (error) {
@@ -47,11 +43,21 @@ function SignIn() {
 
     handleGoogleAuth();
   }, [navigate]);
+  // Hàm fetchUserId để lấy ID người dùng
+  const fetchUserId = async (token: string) => {
+    try {
+      const data = await getIdUser(token);
+      localStorage.setItem('userId', data.userId);
+    } catch (error) {
+      console.error("Failed to get user ID", error);
+    }
+  };
 
 
   const handleGoogleSignIn = () => {
     window.location.href = 'http://localhost:5000/api/auth/google';
   };
+
 
   const onFinish = async (values: { email: string; password: string }) => {
     try {
@@ -69,14 +75,15 @@ function SignIn() {
           localStorage.setItem('role', 'user');
         }
         localStorage.setItem('isLoggedIn', 'true');
-
+        await fetchUserId(response.data.token);
         window.dispatchEvent(new Event('storage'));
         message.success('Login successful!!');
+
         navigate('/');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Login error:', error);
-      message.error(error.response?.data?.message || 'Login Faild.');
+      message.error('Login Failed.');
     }
   };
 
@@ -84,15 +91,15 @@ function SignIn() {
     <div className="min-h-screen flex items-center justify-around bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className='hidden md:block bg-black/30 p-8 rounded-xl backdrop-blur-sm w-1/3 shadow-2xl border border-gray-800'>
         <div className='text-center mb-8'>
-          <p className='text-gray-300 text-lg'>
+          <h1 className='text-gray-300 text-lg'>
             The Ultimate Cinema Experience – Welcome to{' '}
-            <h1 className='text-4xl font-bold text-red-500 mb-4 font-sans'>
+            <p className='text-4xl font-bold text-red-500 mb-4 font-sans'>
               CineBooking
-            </h1>
-          </p>
+            </p>
+          </h1>
         </div>
         <div className="relative overflow-hidden rounded-xl">
-          
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         </div>
       </div>
