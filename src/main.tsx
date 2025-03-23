@@ -33,6 +33,7 @@ axios.defaults.headers.common["Authorization"] = `Bearer ${
 import Theaters from "./Pages/Theaters.tsx";
 import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
 import TheaterDetail from "./Pages/TheaterDetail.tsx";
+import ProfilePage from "./Pages/Profile.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -60,6 +61,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/signin" element={<SignIn />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/movies" element={<GetAllMovie />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
           <Footer />
           <MobileNavigation />
