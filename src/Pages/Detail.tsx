@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { message } from "antd";
 import Card from "../Components/Card";
 
 interface TimeSlot {
@@ -63,6 +64,11 @@ const Detail = () => {
           },
         }
       );
+      if (response.data.message === "Movie added to favorites!") {
+        message.success("Movie added to favorites!");
+      } else {
+        message.warning("Eros");
+      }
       console.log("response", response);
     } catch (error) {
       console.log("error", error);
