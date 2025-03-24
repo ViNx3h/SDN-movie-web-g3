@@ -6,6 +6,10 @@ interface User {
   username: string;
   email: string;
   role: string;
+  bio?: string;
+  location?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 const Profile = () => {
@@ -41,22 +45,28 @@ const Profile = () => {
     <div className="pt-16">
       <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden p-10">
         {user ? (
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col items-center space-y-4">
             <img
               src={user.avatar?.trim() || "/default-avatar.png"}
               alt="User Avatar"
-              className="w-20 h-20 rounded-full border"
+              className="w-24 h-24 rounded-full border"
             />
-            <div>
-              <h2 className="text-xl font-bold">
-                {user.username || "Unknown User"}
-              </h2>
-              <p className="text-gray-600">
-                {user.email || "No email available"}
-              </p>
-              <p className="text-gray-500 text-sm">
-                Role: {user.role || "Unknown"}
-              </p>
+            <div className="text-center">
+              <h2 className="text-xl font-bold">{user.username || "Unknown User"}</h2>
+              <p className="text-gray-600">{user.email || "No email available"}</p>
+              <p className="text-gray-500 text-sm">Role: {user.role || "Unknown"}</p>
+              {user.bio && <p className="text-gray-700 mt-2 italic">"{user.bio}"</p>}
+              {user.location && <p className="text-gray-600">📍 {user.location}</p>}
+              {user.createdAt && (
+                <p className="text-gray-500 text-xs">
+                  Account created: {new Date(user.createdAt).toLocaleDateString()}
+                </p>
+              )}
+              {user.updatedAt && (
+                <p className="text-gray-500 text-xs">
+                  Last updated: {new Date(user.updatedAt).toLocaleDateString()}
+                </p>
+              )}
             </div>
           </div>
         ) : (
