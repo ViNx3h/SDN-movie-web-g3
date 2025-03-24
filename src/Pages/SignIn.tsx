@@ -72,7 +72,7 @@ function SignIn() {
       localStorage.setItem('email', values.email);
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('username', response.data.username);
+      
       
           localStorage.setItem('role', 'user');
         
