@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Card from "../Components/Card";
+import { message } from "antd";
 
 interface TimeSlot {
   _id: string;
@@ -64,8 +65,15 @@ const Detail = () => {
         }
       );
       console.log("response", response);
-    } catch (error) {
-      console.log("error", error);
+      message.success('Add favorite movie successful');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.log("Axios error:", error.response?.data);
+        message.error(error.response?.data?.error || "Something went wrong!");
+      } else {
+        console.log("Unexpected error:", error);
+        message.error("An unexpected error occurred.");
+      }
     }
   };
 
