@@ -120,79 +120,87 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 w-full h-16 bg-neutral-600 bg-opacity-75 z-20">
-      <div className="container mx-auto px-1 flex text-red-500 h-full items-center">
-        <div className="text-lg font-bold">
-          <Link to="/">
-            <h2>Home</h2>
+    <header className="fixed top-0 w-full h-16 bg-neutral-800 bg-opacity-90 z-20 shadow-md">
+      <div className="container mx-auto px-4 flex items-center h-full text-white">
+        {/* Logo */}
+        <div className="text-xl font-semibold">
+          <Link to="/" className="hover:text-red-500 transition">
+            Home
           </Link>
         </div>
-        <div className=" lg:flex items-center d-flex gap-5 ml-5">
-          <div>
-            <Link to="/movies" className="hover:text-neutral-100">
-              Movies
-            </Link>
-          </div>
 
-          <div>
-            <Link to={`/list/fav_list`} className="hover:text-neutral-100 ">
-              Favourite List
-            </Link>
-          </div>
-          <div>
-            <a href="/theaters">
-              <label htmlFor="Movies" className="hover:text-neutral-100">
-                Theaters
-              </label>
-            </a>
-          </div>
-        </div>
-        <div className="hidden: lg:flex items-center ml-auto ">
+        {/* Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-6 ml-8">
+          <Link to="/movies" className="hover:text-red-400 transition">
+            Movies
+          </Link>
+          <Link to="/list/fav_list" className="hover:text-red-400 transition">
+            Favourite List
+          </Link>
+          <Link to="/theaters" className="hover:text-red-400 transition">
+            Theaters
+          </Link>
+        </nav>
+
+        {/* Search Bar */}
+        <div className="hidden lg:flex items-center ml-auto">
           <form
-            className="px-4 outline-none border-none flex items-center gap-3"
+            className="flex items-center bg-neutral-700 rounded-full px-3 py-1"
             onSubmit={handleSubmit}
           >
             <input
               type="text"
-              placeholder="Search here....."
-              className="outline-none border-none bg-neutral-600 rounded-r-lg text-white"
+              placeholder="Search..."
+              className="bg-transparent outline-none text-white placeholder-gray-300 w-40 px-2"
               onChange={(e) => {
                 setSearchInput(e.target.value);
-                setIsSearching(false); // Reset isSearching khi user gõ
+                setIsSearching(false);
               }}
               value={searchInput}
             />
-            <button className="text-white text-xl">
+            <button className="text-white text-lg">
               <FaSearch />
             </button>
           </form>
         </div>
-        <div className="items-center justify-center relative">
-          <div onClick={handleProfileClick} className="cursor-pointer">
-            <CgProfile className="text-black text-3xl" />
+
+        {/* Profile Dropdown */}
+        <div className="relative ml-6">
+          <div
+            onClick={handleProfileClick}
+            className="cursor-pointer text-white text-3xl hover:text-red-500 transition"
+          >
+            <CgProfile />
           </div>
+
           {showDropdown && (
             <div
               ref={dropdownRef}
-              className="absolute right-1/2 transform translate-x-1/2 mt-2 w-40 bg-white rounded-md shadow-lg py-1"
+              className="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-md shadow-lg py-2"
             >
               {isLoggedIn ? (
                 <>
-                  <div className="block px-4 py-2 text-sm text-gray-700">
-                    <div className="d-flex">
-                      <p className=""> Hello </p>
-                      <p> {email} </p>
-                    </div>
+                  <div className="px-4 py-2 text-sm border-b flex items-center">
+                    <p className="font-semibold max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap">
+                      Hello, {email}
+                    </p>
                   </div>
-                  <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                    <Link to={`/profile`}>Profile</Link>
-                  </div>
-                  <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                    <Link to={`/ticket`}>Ticket</Link>
-                  </div>
+
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/ticket"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Ticket
+                  </Link>
                   <div
                     onClick={handleLogout}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                    className="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 cursor-pointer"
                   >
                     Logout
                   </div>
@@ -202,14 +210,14 @@ const Header = () => {
                   <Link
                     to="/signin"
                     onClick={() => setShowDropdown(false)}
-                    className="block text-center py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block text-center py-2 text-sm hover:bg-gray-100"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/signup"
                     onClick={() => setShowDropdown(false)}
-                    className="block text-center py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block text-center py-2 text-sm hover:bg-gray-100"
                   >
                     Sign Up
                   </Link>
