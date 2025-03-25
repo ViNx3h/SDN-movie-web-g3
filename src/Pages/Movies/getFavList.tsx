@@ -75,6 +75,13 @@ const GetFavList = () => {
           },
         }
       );
+
+      if (response.data.message === "Movie removed from favorites!") {
+        message.success("Movie removed from favorites!");
+      } else {
+        message.warning("Eros");
+      }
+
       fetchMovies();
     } catch (error) {
       console.log("error", error);
@@ -174,7 +181,7 @@ const GetFavList = () => {
                     )}
                     <button
                       onClick={() => handleRemoveFavList(movie._id)}
-                      className="bg-red-500 text-white font-bold py-2 px-6 rounded hover:bg-red-700 transition duration-300"
+                      className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors"
                     >
                       Xóa Yêu Thích
                     </button>
