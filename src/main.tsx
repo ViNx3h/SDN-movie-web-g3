@@ -11,6 +11,7 @@ import MobileNavigation from "./Components/MobileNavigation.tsx";
 import "./index.css";
 import Detail from "./Pages/Detail.tsx";
 import Explore from "./Pages/Explore.tsx";
+import List from "./Pages/FavoriteList.tsx";
 import GetFavList from "./Pages/Movies/getFavList.tsx";
 import SignUp from "./Pages/SignUp.tsx";
 // import SearchPage from "./Pages/SearchPage.tsx";

@@ -19,11 +19,11 @@ interface Movie {
   showtimes: Array<{
     _id: string;
     movie: string;
-    // thêm các field khác của showtime nếu cần
+    // add other showtime fields if needed
   }>;
   reviews: Array<{
     _id: string;
-    // thêm các field khác của review nếu cần
+    // add other review fields if needed
   }>;
 }
 
@@ -48,7 +48,7 @@ const GetAllMovie = () => {
       setMovies(response.data.data);
     } catch (error) {
       console.error("Error fetching movies:", error);
-      message.error("Không thể tải danh sách phim");
+      message.error("Unable to load movie list");
     } finally {
       setLoading(false);
     }
@@ -59,108 +59,87 @@ const GetAllMovie = () => {
   }, []);
 
   return (
-    <div className="pt-16">
-      <div className="min-h-screen bg-gray-900 ">
+    <div className="py-16">
+      <div className="min-h-screen bg-gray-900">
         <div className="container mx-auto">
-          <h1 className="text-3xl font-bold text-white mb-8">Danh sách phim</h1>
+          <h1 className="text-3xl font-bold text-white mt-4 mb-8"></h1>
 
           {loading ? (
             <div className="flex justify-center items-center">
               <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-red-600"></div>
             </div>
           ) : movies && movies.length > 0 ? (
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {movies.map((movie) => (
-                <div
-                  key={movie._id}
-                  className="bg-gray-800 rounded-lg overflow-hidden"
-                >
-                  {/* Poster */}
-                  <div className="relative">
-                    <img
-                      src={movie.posterUrl}
-                      alt={movie.title}
-                      className="w-full h-[400px] object-cover"
-                    />
-                    <div className="absolute top-2 right-2 bg-yellow-500 px-2 py-1 rounded">
-                      ★ {movie.rating}/10
-                    </div>
-                  </div>
+                <div key={movie._id} className="bg-gray-800 rounded-lg overflow-hidden">
 
-                  {/* Movie Info */}
-                  <div className="p-4">
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {movie.title}
-                    </h3>
-
-                    {/* Genres */}
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {movie.genre.map((g, index) => (
-                        <span
-                          key={index}
-                          className="bg-red-600 text-white text-xs px-2 py-1 rounded-full"
-                        >
-                          {g}
-                        </span>
-                      ))}
+                  <button onClick={() => navigate(`/movie/${movie._id}`)}>
+                    {/* Poster */}
+                    <div className="relative">
+                      <img
+                        src={movie.posterUrl}
+                        alt={movie.title}
+                        className="w-full h-[300px] object-cover"
+                      />
+                      <div className="absolute top-2 right-2 bg-yellow-500 px-2 py-1 rounded">
+                        ★ {movie.rating}/10
+                      </div>
                     </div>
 
-                    {/* Basic Info */}
-                    <div className="text-gray-300 text-sm space-y-1">
-                      <p>Đạo diễn: {movie.director}</p>
-                      <p>Thời lượng: {movie.duration} phút</p>
-                      <p>Ngôn ngữ: {movie.language}</p>
-                      <p>
-                        Khởi chiếu:{" "}
-                        {new Date(movie.releaseDate).toLocaleDateString()}
-                      </p>
-                      <p>Số suất chiếu: {movie.showtimes?.length || 0}</p>
-                      <p>Số đánh giá: {movie.reviews?.length || 0}</p>
-                    </div>
+                    {/* Movie Info */}
+                    <div className="p-4">
+                      <div className="relative group">
+                        <h3 className="text-xl font-bold text-white mb-2 line-clamp-1">
+                          {movie.title}
+                        </h3>
+                        <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm  py-1 rounded shadow-lg">
+                          {movie.title}
+                        </div>
+                      </div>
 
-                    {/* Cast */}
-                    <div className="mt-3">
-                      <p className="text-gray-400 text-sm">Diễn viên:</p>
-                      <p className="text-white text-sm">
-                        {movie.cast.join(", ")}
-                      </p>
-                    </div>
+                      {/* Genres */}
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {movie.genre.map((g, index) => (
+                          <span
+                            key={index}
+                            className="bg-red-600 text-white text-xs px-2 py-1 rounded-full"
+                          >
+                            {g}
+                          </span>
+                        ))}
+                      </div>
 
-                    {/* Description */}
-                    <div className="mt-3">
-                      <p className="text-gray-400 text-sm">Mô tả:</p>
-                      <p className="text-white text-sm line-clamp-3">
-                        {movie.description}
-                      </p>
-                    </div>
+                      {/* Basic Info */}
+                      <div className="text-gray-300 text-sm space-y-1 text-left">
+                        <p>
+                          Release Date:{" "}
+                          {new Date(movie.releaseDate).toLocaleDateString()}
+                        </p>
+                        <p>Showtimes: {movie.showtimes?.length || 0}</p>
+                      </div>
 
-                    {/* Buttons */}
-                    <div className="mt-4 flex gap-2">
-                      <button
-                        onClick={() => navigate(`/movie/${movie._id}`)}
-                        className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors"
-                      >
-                        Chi tiết
-                      </button>
-                      {movie.showtimes && movie.showtimes.length > 0 && (
-                        <button
-                          onClick={() => navigate(`/booking/${movie._id}`)}
-                          className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors"
-                        >
-                          Đặt vé
-                        </button>
-                      )}
+                      <div className="mt-3 text-left">
+                        <p className="text-gray-400 text-sm">Description:</p>
+                        {movie.description ? (
+                          <p className="text-white text-sm line-clamp-2">{movie.description}</p>
+                        ) : (
+                          <p className="text-gray-500 text-sm italic">No description available</p>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  </button>
                 </div>
               ))}
             </div>
+
+
           ) : (
-            <div className="text-white text-center">Không có phim nào</div>
+            <div className="text-white text-center">No movies available</div>
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

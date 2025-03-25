@@ -15,23 +15,25 @@ function SignIn() {
     const handleGoogleAuth = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
-
+  
       if (token) {
         try {
           const decodedToken = JSON.parse(atob(token.split('.')[1]));
-
+  
           localStorage.setItem('token', token);
           localStorage.setItem('email', decodedToken.email);
-          localStorage.setItem('role', decodedToken.role);
+          localStorage.setItem('role', decodedToken.role); // Nếu có role
+          localStorage.setItem('userId', decodedToken.sub || decodedToken.user_id); // Lưu userId
           localStorage.setItem('isLoggedIn', 'true');
+  
           await fetchUserId(token);
           message.success('Đăng nhập Google thành công!');
           navigate('/');
-
+  
           // Clear token from URL after successful login
           const cleanURL = window.location.origin + window.location.pathname;
           window.history.replaceState({}, document.title, cleanURL);
-
+  
           window.dispatchEvent(new Event('storage'));
         } catch (error) {
           console.error('Lỗi xử lý đăng nhập Google:', error);
@@ -40,9 +42,10 @@ function SignIn() {
         }
       }
     };
-
+  
     handleGoogleAuth();
   }, [navigate]);
+  
   // Hàm fetchUserId để lấy ID người dùng
   const fetchUserId = async (token: string) => {
     try {
@@ -69,11 +72,10 @@ function SignIn() {
       localStorage.setItem('email', values.email);
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('username', response.data.username);
-        if (response.data.username) {
-          localStorage.setItem('username', response.data.username);
+      
+      
           localStorage.setItem('role', 'user');
-        }
+        
         localStorage.setItem('isLoggedIn', 'true');
         await fetchUserId(response.data.token);
         window.dispatchEvent(new Event('storage'));

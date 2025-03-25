@@ -34,12 +34,9 @@ const Detail = () => {
   const [data, setData] = useState<any>({});
   const params = useParams<any>();
   const navigate = useNavigate();
-  const username = localStorage.getItem("email");
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const movie_id = params.id;
-
-  console.log("user", username);
 
   const fetchData = async () => {
     try {
@@ -47,7 +44,8 @@ const Detail = () => {
         `http://localhost:5000/api/auth/get_movie_by_id/${params.id}`
       );
       setData(response.data.data);
-      console.log("data", response.data.data);
+      console.log(response.data.data);
+
     } catch (error) {
       console.log("error", error);
     }
@@ -55,7 +53,7 @@ const Detail = () => {
 
   const handleAddFavList = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:5000/api/auth/${userId}/add_fav_movies/${movie_id}`,
         {},
         {
@@ -64,14 +62,11 @@ const Detail = () => {
           },
         }
       );
-      console.log("response", response);
-      message.success('Add favorite movie successful');
+      message.success("Added to favorite movies successfully");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.log("Axios error:", error.response?.data);
         message.error(error.response?.data?.error || "Something went wrong!");
       } else {
-        console.log("Unexpected error:", error);
         message.error("An unexpected error occurred.");
       }
     }
@@ -82,128 +77,71 @@ const Detail = () => {
   }, [params.id]);
 
   return (
-    <div className="pt-16">
-      <div className="py-16 ml-14 mx-auto">
-        <div className="flex grid mx-auto grid-cols-5 gap-5 relative overflow-hidden">
-          <div className="relative mx-auto">
-            <Card className="" data={data} media_type={params.detail} />
-          </div>
-          <div className="border-solid border min-w-full col-span-4 p-6 flex flex-col gap-4">
-            <h1 className="text-3xl font-bold mb-4">{data.title}</h1>
+    <div className="min-h-screen bg-gray-900 text-white  pt-20  ">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Movie Poster */}
+        <div className="flex justify-center">
 
-            <div className="space-y-3">
-              <p className="font-semibold">
-                Thể loại:{" "}
-                <span className="font-normal">{data.genre?.join(" • ")}</span>
-              </p>
-
-              <p className="font-semibold">
-                Đạo diễn: <span className="font-normal">{data.director}</span>
-              </p>
-
-              <p className="font-semibold">
-                Diễn viên:{" "}
-                <span className="font-normal">{data.cast?.join(" • ")}</span>
-              </p>
-
-              <p className="font-semibold">
-                Thời lượng:{" "}
-                <span className="font-normal">{data.duration} phút</span>
-              </p>
-
-              <p className="font-semibold">
-                Ngôn ngữ: <span className="font-normal">{data.language}</span>
-              </p>
-
-              <p className="font-semibold">
-                Ngày khởi chiếu:{" "}
-                <span className="font-normal">
-                  {new Date(data.releaseDate).toLocaleDateString("vi-VN")}
-                </span>
-              </p>
-
-              <div className="flex gap-4 mt-6">
-                <button
-                  onClick={() => navigate(`/booking/${data._id}`)}
-                  className="bg-red-500 text-white font-bold py-2 px-6 rounded hover:bg-red-700 transition duration-300"
-                >
-                  Đặt vé ngay
-                </button>
-                {data.trailerUrl && (
-                  <button
-                    onClick={() => window.open(data.trailerUrl, "_blank")}
-                    className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition duration-300"
-                  >
-                    Xem trailer
-                  </button>
-                )}
-                <button
-                  onClick={() => handleAddFavList()}
-                  className="bg-red-500 text-white font-bold py-2 px-6 rounded hover:bg-red-700 transition duration-300"
-                >
-                  Yêu Thích
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p className="font-semibold">
-          Đánh giá:{" "}
-          <span className="font-normal text-yellow-500">
-            ★ {data.rating}/10
-          </span>
-        </p>
-
-        <div className="mt-4">
-          <h2 className="font-bold text-xl mb-2">Mô tả:</h2>
-          <p className="text-gray-700">{data.description}</p>
+          <img src={data.posterUrl} alt={data.title} className="w-56 md:w-80" />
         </div>
 
-        {/* Showtimes Section */}
-        {data.showtimes && data.showtimes.length > 0 && (
-          <div className="mt-4">
-            <h2 className="font-bold text-xl mb-2">Lịch chiếu:</h2>
-            {data.showtimes.map((showtime: Showtime) => (
-              <div
-                key={showtime._id}
-                className="bg-gray-100 p-4 rounded-lg mb-2"
-              >
-                <p>
-                  Ngày chiếu:{" "}
-                  {new Date(showtime.showDate).toLocaleDateString("vi-VN")}
-                </p>
-                <p>Giá vé: {showtime.price.toLocaleString("vi-VN")}đ</p>
-                <div className="mt-2">
-                  <p className="font-semibold">Giờ chiếu:</p>
+        {/* Movie Details */}
+        <div className="md:col-span-2 space-y-8 pl-10">
+          <h1 className="text-4xl font-extrabold text-yellow-400">{data.title}</h1>
+          <p className="text-lg text-gray-300">{data.description}</p>
+
+          <div className="space-y-2">
+            <p className="text-lg"><span className="font-semibold text-xl pr-4 ">Genre:</span> {data.genre?.join(" • ")}</p>
+            <p className="text-lg"><span className="font-semibold text-xl pr-4 ">Director:</span> {data.director}</p>
+            <p className="text-lg"><span className="font-semibold text-xl pr-4 ">Cast:</span> {data.cast?.join(" • ")}</p>
+            <p className="text-lg"><span className="font-semibold text-xl pr-4 ">Duration:</span> {data.duration} minutes</p>
+            <p className="text-lg"><span className="font-semibold text-xl pr-4 ">Language:</span> {data.language}</p>
+            <p className="text-lg"><span className="font-semibold text-xl pr-4 ">Release Date:</span> {new Date(data.releaseDate).toLocaleDateString("en-US")}</p>
+          </div>
+
+          <div className="flex space-x-4 mt-6">
+            <button onClick={() => navigate(`/booking/${data._id}`)}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded">
+              Book Now
+            </button>
+            {data.trailerUrl && (
+              <button onClick={() => window.open(data.trailerUrl, "_blank")}
+                className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded">
+                Watch Trailer
+              </button>
+            )}
+            <button onClick={handleAddFavList}
+              className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded">
+              Favorite
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Showtimes Section */}
+      <div className="mt-10 max-w-full mx-auto ml-96 mr-96">
+        <h2 className="text-2xl font-bold text-yellow-400 mb-4">Showtimes</h2>
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+          {data.showtimes && data.showtimes.length > 0 ? (
+            data.showtimes.map((showtime: Showtime) => (
+              <div key={showtime._id} className="bg-gray-800 p-4 rounded-lg">
+                <p>Show Date: {new Date(showtime.showDate).toLocaleDateString("en-US")}</p>
+                <p>Price: {showtime.price.toLocaleString("en-US")}$</p>
+                <p className="mt-2 font-semibold">Time Slots:</p>
+                <div className="flex flex-wrap gap-2 mt-1">
                   {showtime.timeSlots.map((slot) => (
-                    <span
-                      key={slot._id}
-                      className="inline-block bg-white px-3 py-1 rounded mr-2 mt-1"
-                    >
+                    <span key={slot._id} className="bg-yellow-400 text-black px-3 py-1 rounded">
                       {slot.startTime} - {slot.endTime}
                     </span>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {/* Reviews Section */}
-        {data.reviews && data.reviews.length > 0 && (
-          <div className="mt-4">
-            <h2 className="font-bold text-xl mb-2">Đánh giá:</h2>
-            {data.reviews.map((review: Review) => (
-              <div key={review._id} className="bg-gray-100 p-4 rounded-lg mb-2">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-yellow-500">★ {review.rating}</span>
-                  <span className="text-gray-500">|</span>
-                  <span className="text-gray-700">{review.comment}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <div className="bg-gray-800 p-4 rounded-lg text-center">
+              <p className="text-gray-400">No showtimes available</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
