@@ -11,6 +11,7 @@ import MobileNavigation from "./Components/MobileNavigation.tsx";
 import "./index.css";
 import Detail from "./Pages/Detail.tsx";
 import Explore from "./Pages/Explore.tsx";
+import List from "./Pages/FavoriteList.tsx";
 import GetFavList from "./Pages/Movies/getFavList.tsx";
 import SignUp from "./Pages/SignUp.tsx";
 // import SearchPage from "./Pages/SearchPage.tsx";
@@ -34,6 +35,7 @@ import Theaters from "./Pages/Theaters.tsx";
 import GetAllMovie from "./Pages/Movies/GetAllMovie.tsx";
 import TheaterDetail from "./Pages/TheaterDetail.tsx";
 import ProfilePage from "./Pages/Profile.tsx";
+import Ticket from "./Pages/Ticket.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -47,9 +49,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path=":detail" element={<Explore />}></Route>
             <Route path=":detail/:id" element={<Detail />}></Route>
             <Route path=":movie/:id" element={<Detail />}></Route>
-            <Route path="/search" element={<SearchPage />}></Route>
+            <Route path="/search" element={<SearchPage />}></Route>\
+            <Route path="/ticket" element={<Ticket />}></Route>
             <Route
-              path="/booking/:detail/:id"
+              path="/booking/:movieId"
               element={<Booking />}
             ></Route>{" "}
             {/* Thêm tuyến đường Booking */}

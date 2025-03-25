@@ -19,6 +19,7 @@ function SignUp() {
       });
 
       if (response.data) {
+        localStorage.setItem('username', values.username);
         localStorage.setItem('registeredEmail', values.email);
         navigate('/signin');
       }
@@ -64,23 +65,20 @@ function SignUp() {
             autoComplete="off"
           >
             <Form.Item
-              name="Username"
+              name="username"  // ✅ Đúng
               rules={[{ required: true, message: 'Enter your name!' }]}
-
             >
-
               <Input
                 prefix={<UserOutlined className="text-gray-400" />}
                 placeholder="Your name"
                 className="h-12 !bg-gray-800/50 !border-gray-700 !text-white rounded-lg"
-                autoComplete="new-email"
               />
             </Form.Item>
 
             <Form.Item
-              name="Email"
+              name="email"  // ✅ Đúng
               rules={[
-                { required: true, message: 'Enter you email!' },
+                { required: true, message: 'Enter your email!' },
                 { type: 'email', message: 'Invalid email!' }
               ]}
             >
@@ -88,9 +86,9 @@ function SignUp() {
                 prefix={<MailOutlined className="text-gray-400" />}
                 placeholder="Email"
                 className="h-12 !bg-gray-800/50 !border-gray-700 !text-white rounded-lg"
-                autoComplete='off'
               />
             </Form.Item>
+
 
             <Form.Item
               name="password"
