@@ -21,13 +21,12 @@ const TheaterList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  // Gọi API lấy danh sách rạp phim
   const fetchTheaters = async () => {
     try {
       const token = localStorage.getItem("token") || "";
       const response = await getAllTheaters(token);
       console.log("API Response:", response);
-      setTheaters(response); // Đảm bảo response là array
+      setTheaters(response);
     } catch (error) {
       message.error("Error loading cinema list!");
     } finally {
