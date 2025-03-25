@@ -19,11 +19,9 @@ interface Movie {
   showtimes: Array<{
     _id: string;
     movie: string;
-    // thêm các field khác của showtime nếu cần
   }>;
   reviews: Array<{
     _id: string;
-    // thêm các field khác của review nếu cần
   }>;
 }
 
@@ -32,24 +30,21 @@ const GetFavList = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const params = useParams<any>();
-  const id = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  const movie_id = params.id;
+
   const fetchMovies = async () => {
-    const token = localStorage.getItem("token");
     if (!token) {
-      message.error("You need to sign in to view movie list");
-      navigate("/signin"); // Chuyển hướng đến trang đăng nhập
+      message.error("You need to sign in to view your favorite movies.");
+      navigate("/signin");
       return;
     }
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/auth/user/get_fav_movies/${id}`,
+        `http://localhost:5000/api/auth/user/get_fav_movies/${userId}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setMovies(response.data.data);
@@ -64,134 +59,80 @@ const GetFavList = () => {
     fetchMovies();
   }, []);
 
-  const handleRemoveFavList = async (movie_id: string) => {
+  const handleRemoveFavList = async (movieId: string) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/auth/${id}/remove_fav_movie/${movie_id}`,
+        `http://localhost:5000/api/auth/${userId}/remove_fav_movie/${movieId}`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       if (response.data.message === "Movie removed from favorites!") {
         message.success("Movie removed from favorites!");
+        fetchMovies();
       } else {
-        message.warning("Eros");
+        message.warning("Error removing movie.");
       }
-
-      fetchMovies();
     } catch (error) {
-      console.log("error", error);
+      console.log("Error:", error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
+    <div className="min-h-screen bg-gray-900 pt-28">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Danh sách phim</h1>
+        <h1 className="text-3xl font-bold text-white mb-8">Favorite Movies</h1>
 
         {loading ? (
           <div className="flex justify-center items-center">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-red-600"></div>
           </div>
-        ) : movies && movies.length > 0 ? (
+        ) : movies.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {movies.map((movie) => (
-              <div
-                key={movie._id}
-                className="bg-gray-800 rounded-lg overflow-hidden"
-              >
-                {/* Poster */}
+              <div key={movie._id} className="bg-gray-800 rounded-lg overflow-hidden">
                 <div className="relative">
-                  <img
-                    src={movie.posterUrl}
-                    alt={movie.title}
-                    className="w-full h-[400px] object-cover"
-                  />
-                  <div className="absolute top-2 right-2 bg-yellow-500 px-2 py-1 rounded">
-                    ★ {movie.rating}/10
-                  </div>
+                  <img src={movie.posterUrl} alt={movie.title} className="w-full h-[400px] object-cover" />
+                  <div className="absolute top-2 right-2 bg-yellow-500 px-2 py-1 rounded">★ {movie.rating}/10</div>
                 </div>
-
-                {/* Movie Info */}
                 <div className="p-4">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    {movie.title}
-                  </h3>
-
-                  {/* Genres */}
+                  <h3 className="text-xl font-bold text-white mb-2">{movie.title}</h3>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {movie.genre.map((g, index) => (
-                      <span
-                        key={index}
-                        className="bg-red-600 text-white text-xs px-2 py-1 rounded-full"
-                      >
-                        {g}
-                      </span>
+                      <span key={index} className="bg-red-600 text-white text-xs px-2 py-1 rounded-full">{g}</span>
                     ))}
                   </div>
-
-                  {/* Basic Info */}
                   <div className="text-gray-300 text-sm space-y-1">
-                    <p>Đạo diễn: {movie.director}</p>
-                    <p>Thời lượng: {movie.duration} phút</p>
-                    <p>Ngôn ngữ: {movie.language}</p>
-                    <p>
-                      Khởi chiếu:{" "}
-                      {new Date(movie.releaseDate).toLocaleDateString()}
-                    </p>
-                    <p>Số suất chiếu: {movie.showtimes?.length || 0}</p>
-                    <p>Số đánh giá: {movie.reviews?.length || 0}</p>
+                    <p>Director: {movie.director}</p>
+                    <p>Duration: {movie.duration} minutes</p>
+                    <p>Language: {movie.language}</p>
+                    <p>Release Date: {new Date(movie.releaseDate).toLocaleDateString()}</p>
+                    <p>Showtimes: {movie.showtimes?.length || 0}</p>
+                    <p>Reviews: {movie.reviews?.length || 0}</p>
                   </div>
-
-                  {/* Cast */}
                   <div className="mt-3">
-                    <p className="text-gray-400 text-sm">Diễn viên:</p>
-                    <p className="text-white text-sm">
-                      {movie.cast.join(", ")}
-                    </p>
+                    <p className="text-gray-400 text-sm">Cast:</p>
+                    <p className="text-white text-sm">{movie.cast.join(", ")}</p>
                   </div>
-
-                  {/* Description */}
                   <div className="mt-3">
-                    <p className="text-gray-400 text-sm">Mô tả:</p>
-                    <p className="text-white text-sm line-clamp-3">
-                      {movie.description}
-                    </p>
+                    <p className="text-gray-400 text-sm">Description:</p>
+                    <p className="text-white text-sm line-clamp-3">{movie.description}</p>
                   </div>
-
-                  {/* Buttons */}
                   <div className="mt-4 flex gap-2">
-                    <button
-                      onClick={() => navigate(`/movie/${movie._id}`)}
-                      className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors"
-                    >
-                      Chi tiết
-                    </button>
-                    {movie.showtimes && movie.showtimes.length > 0 && (
-                      <button
-                        onClick={() => navigate(`/booking/${movie._id}`)}
-                        className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors"
-                      >
-                        Đặt vé
-                      </button>
+                    <button onClick={() => navigate(`/movie/${movie._id}`)} className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors">Details</button>
+                    {movie.showtimes.length > 0 && (
+                      <button onClick={() => navigate(`/booking/${movie._id}`)} className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors">Book Ticket</button>
                     )}
-                    <button
-                      onClick={() => handleRemoveFavList(movie._id)}
-                      className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors"
-                    >
-                      Xóa Yêu Thích
-                    </button>
+                    <button onClick={() => handleRemoveFavList(movie._id)} className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors">Remove</button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-white text-center">Không có phim nào</div>
+          <div className="text-white text-center">No favorite movies available</div>
         )}
       </div>
     </div>
